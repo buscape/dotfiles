@@ -21,10 +21,29 @@ PATH="$NPM_PACKAGES/bin:$PATH"
 unset MANPATH # delete if you already modified MANPATH elsewhere in your config
 MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 
+# Load nvm
 export NVM_DIR="~/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
 # set nvm version to stable
 nvm use stable
 
 # Load z
 . ~/.zsh/lib/z.sh
+
+# Simplest job-logger, usage: now Working on Feature X
+now() {
+    echo $(date "+%Y-%m-%d %H:%M:%S") - "$@" >> $HOME/Documents/job_log.txt
+}
+# Get computer boot time
+boottime() {
+  sysctl -a|grep kern.boottime
+}
+# Get display wake time from today
+waketime() {
+    syslog|grep DisplayDidWake| grep "$(date +"%b")\s$(date +"%e")" | head -n 1
+}
+# Get all display wake times
+waketimes() {
+    syslog|grep DisplayDidWake
+}
